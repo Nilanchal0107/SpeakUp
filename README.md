@@ -2,6 +2,15 @@
 
 #### Video Demo: `<URL HERE>`
 
+| Field | Details |
+|---|---|
+| **Project** | SpeakUp |
+| **Name** | Nilanchal Jena |
+| **GitHub** | [Nilanchal0107](https://github.com/Nilanchal0107) |
+| **edX** | NJ_2702 |
+| **Location** | Kalyan, India |
+| **Date** | 26 May 2026 |
+
 #### Description:
 
 SpeakUp is a web application that helps users improve their spoken English communication skills through AI-powered feedback. Users select a practice scenario — ranging from everyday conversation to professional presentations — record or upload their spoken response, and receive a detailed evaluation across six communication parameters: **clarity, relevance, fluency, grammar, confidence, and structure**.
