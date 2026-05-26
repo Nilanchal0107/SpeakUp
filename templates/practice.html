@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block title %}Practice — {{ scenario.title }}{% endblock %}
+
+{% block main %}
+<section class="su-practice-hero">
+    <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="su-breadcrumb">
+            <ol class="breadcrumb mb-3">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('scenarios', category=category) }}">{{ category_data.name }}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ scenario.title }}
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Scenario Prompt Card -->
+        <div class="su-card su-prompt-card">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                {% if scenario.difficulty == "Easy" %}
+                    <span class="su-badge su-badge-easy">Easy</span>
+                {% elif scenario.difficulty == "Medium" %}
+                    <span class="su-badge su-badge-medium">Medium</span>
+                {% else %}
+                    <span class="su-badge su-badge-hard">Hard</span>
+                {% endif %}
+                <span class="su-badge su-badge-time">
+                    <i class="bi bi-clock me-1"></i>{{ scenario.time_limit }}s
+                </span>
+            </div>
+            <h1 class="su-heading su-heading-lg mb-3">{{ scenario.title }}</h1>
+            <p class="su-prompt-text">{{ scenario.prompt }}</p>
+        </div>
+
+        {% if scenario.tips %}
+        <div class="su-tips-card su-card mt-3">
+            <p class="su-tips-label">
+                <i class="bi bi-lightbulb-fill me-2 su-cyan"></i><strong>Tips</strong>
+            </p>
+            <ul class="su-tips-list">
+                {% for tip in scenario.tips %}
+                    <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<section class="su-practice-panel">
+    <div class="container">
+
+        <!-- Hidden context inputs — read by speech.js -->
+        <input type="hidden" id="category-input" value="{{ category }}">
+        <input type="hidden" id="scenario-id-input" value="{{ scenario.id }}">
+        <input type="hidden" id="time-limit" value="{{ scenario.time_limit }}">
+
+        <!-- Error message area -->
+        <div id="error-message" class="su-warning" style="display:none;"></div>
+
+        <!-- Browser not supported warning -->
+        <div id="browser-warning" class="su-warning" style="display:none;">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Your browser does not support audio recording.
+            Please use the file upload option below, or switch to Chrome, Edge, or Firefox.
+        </div>
+
+        <!-- ── Record Section ───────────────────────────────────────────── -->
+        <div id="record-section" class="su-card su-practice-record-card mb-4">
+            <h2 class="su-heading practice-section-title">
+                <i class="bi bi-mic-fill su-cyan me-2"></i>Record Your Response
+            </h2>
+            <p class="su-muted practice-section-subtitle">
+                Click <strong>Start Recording</strong>, speak your response, then click <strong>Stop</strong>.
+                Your audio is transcribed by Groq Whisper for accurate results — including names and proper nouns.
+            </p>
+
+            <!-- Timer -->
+            <div class="su-practice-timer" id="timer-display">
+                {{ scenario.time_limit // 60 }}:{{ '%02d' % (scenario.time_limit % 60) }}
+            </div>
+
+            <!-- Record and Stop buttons -->
+            <div class="practice-btn-row">
+                <button id="record-btn" class="su-btn-record-new">
+                    <i class="bi bi-record-circle me-2"></i>Start Recording
+                </button>
+                <button id="stop-btn" class="su-btn-outline" disabled>
+                    <i class="bi bi-stop-fill me-2"></i>Stop
+                </button>
+            </div>
+        </div>
+
+        <!-- ── Loading Section (shown while uploading / processing) ─────── -->
+        <div id="loading-section" class="su-card su-practice-loading-card" style="display:none;">
+            <div class="su-spinner practice-spinner"></div>
+            <p id="loading-text" class="su-practice-loading-text">Processing your speech...</p>
+            <small class="su-muted">This usually takes 3–5 seconds</small>
+        </div>
+
+        <!-- ── Upload Section ───────────────────────────────────────────── -->
+        <div id="upload-section" class="su-card su-practice-upload-card">
+            <h2 class="su-heading practice-section-title">
+                <i class="bi bi-cloud-arrow-up-fill su-cyan me-2"></i>Or Upload an Audio File
+            </h2>
+            <p class="su-muted practice-section-subtitle">
+                Upload a pre-recorded audio file (mp3, wav, m4a, webm — max 25 MB)
+            </p>
+
+            <div class="su-upload-zone" id="upload-zone">
+                <div class="su-upload-zone-icon">
+                    <i class="bi bi-file-earmark-music-fill"></i>
+                </div>
+                <p class="su-upload-zone-title">Click to choose an audio file</p>
+                <p class="su-upload-zone-hint">MP3 · WAV · M4A · WEBM &nbsp;·&nbsp; Max 25 MB</p>
+                <input
+                    type="file"
+                    id="audio-file-input"
+                    accept=".mp3,.wav,.m4a,.webm"
+                    class="su-file-input"
+                    onclick="event.stopPropagation()">
+            </div>
+
+            <div class="su-upload-selected" id="upload-selected-wrap" style="display:none;">
+                <i class="bi bi-file-earmark-music-fill su-cyan me-2"></i>
+                <span id="file-name-display" class="su-upload-filename">No file chosen</span>
+            </div>
+
+            <div class="mt-4">
+                <button id="upload-btn" class="su-btn-primary">
+                    <i class="bi bi-upload me-2"></i>Upload and Analyse
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- speech.js loaded only on this page to keep other pages lightweight -->
+<script src="{{ url_for('static', filename='js/speech.js') }}"></script>
+{% endblock %}

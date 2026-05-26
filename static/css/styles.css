@@ -1,0 +1,1103 @@
+/* ==========================================================================
+   styles.css — SpeakUp Custom Design System
+   Per guidelines.md: Bootstrap 5 is the grid/utility layer.
+   This file overrides and extends Bootstrap with the SpeakUp visual identity.
+   NEVER use inline styles — all styles go here.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+    --bg-deep: #000328;
+    --bg-mid: #00458e;
+    --cyan: #00eaff;
+    --cyan-dim: rgba(0, 234, 255, 0.45);
+    --green-glow: rgba(0, 255, 176, 0.3);
+    --text-primary: #eaffff;
+    --text-muted: #94a3b8;
+    --card-bg: #021740;
+    --border-soft: rgba(0, 255, 176, 0.22);
+    --font-display: 'Montserrat', sans-serif;
+    --font-body: 'Sora', sans-serif;
+
+    /* Legacy tokens mapped to new palette */
+    --su-bg-deep: var(--bg-deep);
+    --su-bg-mid: var(--bg-mid);
+    --su-cyan: var(--cyan);
+    --su-text: var(--text-primary);
+    --su-muted: var(--text-muted);
+    --su-card-bg: rgba(2, 23, 64, 0.7);
+    --su-card-border: var(--border-soft);
+    --su-success: #22d3a5;
+    --su-danger: #ff4d6d;
+    --su-warning: #f59e0b;
+
+    /* Typography — guidelines.md: Montserrat headings, Sora body */
+    --su-font-heading: var(--font-display);
+    --su-font-body: var(--font-body);
+
+    /* Spacing */
+    --su-radius-card: 18px;
+    --su-radius-btn: 10px;
+
+    /* Transitions */
+    --su-transition: 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base / Reset
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    /* Dark gradient background — #000328 → #00458e per guidelines.md */
+    background: linear-gradient(135deg, var(--su-bg-deep) 0%, var(--su-bg-mid) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--su-text);
+    font-family: var(--su-font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgba(2, 23, 64, 0.6);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(0, 234, 255, 0.35);
+    border-radius: 999px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 234, 255, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6,
+.su-heading {
+    font-family: var(--su-font-heading);
+    font-weight: 700;
+    color: var(--su-text);
+    letter-spacing: -0.02em;
+}
+
+.su-heading-xl {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.su-heading-lg {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+}
+
+.su-muted {
+    color: var(--su-muted);
+}
+
+.su-cyan {
+    color: var(--su-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   4. Navbar
+   -------------------------------------------------------------------------- */
+.su-navbar {
+    background: rgba(0, 3, 40, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--su-card-border);
+    padding: 0.9rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.su-brand {
+    font-family: var(--su-font-heading);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--su-cyan) !important;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    transition: opacity var(--su-transition);
+    text-shadow: 0 0 16px rgba(0, 234, 255, 0.35);
+}
+
+.su-brand:hover {
+    opacity: 0.85;
+}
+
+.su-brand-icon {
+    margin-right: 0.35rem;
+    font-size: 1.3rem;
+}
+
+.su-navbar .nav-link {
+    color: var(--su-muted) !important;
+    font-weight: 500;
+    transition: color var(--su-transition);
+    padding: 0.45rem 1rem;
+}
+
+.su-navbar .nav-link:hover {
+    color: var(--su-cyan) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Cards (Glassmorphism)
+   -------------------------------------------------------------------------- */
+.su-card {
+    background: var(--su-card-bg);
+    border: 1px solid var(--su-card-border);
+    border-radius: var(--su-radius-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform var(--su-transition), box-shadow var(--su-transition);
+    overflow: hidden;
+}
+
+.su-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 234, 255, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   5a. Home Hero
+   -------------------------------------------------------------------------- */
+.su-hero {
+    padding: 2rem 0 3rem;
+    animation: su-fade-up 0.6s ease both;
+}
+
+.su-hero-kicker {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.su-hero-title {
+    text-shadow: 0 0 28px rgba(0, 234, 255, 0.25);
+    margin-bottom: 0.5rem;
+}
+
+.su-hero-tagline {
+    font-family: var(--su-font-heading);
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.su-hero-subtitle {
+    max-width: 36rem;
+}
+
+/* --------------------------------------------------------------------------
+   5b. Category Cards
+   -------------------------------------------------------------------------- */
+.su-category-section {
+    padding-bottom: 1rem;
+}
+
+.su-category-card {
+    padding: 2rem 1.75rem;
+    height: 100%;
+    border-color: var(--border-soft);
+}
+
+.su-category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 44px rgba(0, 234, 255, 0.18);
+}
+
+.su-category-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 234, 255, 0.12);
+    border: 1px solid var(--border-soft);
+    color: var(--cyan);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.su-category-title {
+    font-size: 1.35rem;
+    margin-bottom: 0.6rem;
+}
+
+.su-category-desc {
+    min-height: 3.4rem;
+}
+
+.su-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.su-badge-beginner {
+    background: rgba(34, 211, 165, 0.15);
+    color: var(--su-success);
+    border: 1px solid rgba(34, 211, 165, 0.35);
+}
+
+.su-badge-intermediate {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--su-warning);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.su-badge-advanced {
+    background: rgba(255, 77, 109, 0.15);
+    color: var(--su-danger);
+    border: 1px solid rgba(255, 77, 109, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   5c. Scenarios Page
+   -------------------------------------------------------------------------- */
+.su-breadcrumb .breadcrumb {
+    background: transparent;
+    margin-bottom: 0;
+}
+
+.su-breadcrumb a {
+    color: var(--su-cyan);
+    text-decoration: none;
+}
+
+.su-breadcrumb .breadcrumb-item.active {
+    color: var(--su-muted);
+}
+
+.su-scenarios-hero {
+    padding: 1.5rem 0 2rem;
+}
+
+.su-scenario-list {
+    padding-bottom: 1.5rem;
+}
+
+.su-scenario-card {
+    padding: 1.6rem 1.8rem;
+    border-color: var(--border-soft);
+}
+
+.su-scenario-title {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+}
+
+.su-scenario-preview {
+    margin-bottom: 0.75rem;
+}
+
+.su-badge-time {
+    background: rgba(0, 234, 255, 0.15);
+    color: var(--su-cyan);
+    border: 1px solid rgba(0, 234, 255, 0.35);
+}
+
+.su-badge-easy {
+    background: rgba(34, 211, 165, 0.15);
+    color: var(--su-success);
+    border: 1px solid rgba(34, 211, 165, 0.35);
+}
+
+.su-badge-medium {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--su-warning);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.su-badge-hard {
+    background: rgba(255, 77, 109, 0.15);
+    color: var(--su-danger);
+    border: 1px solid rgba(255, 77, 109, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   5d. Practice Page
+   -------------------------------------------------------------------------- */
+.su-practice-hero {
+    padding: 1.5rem 0 2rem;
+}
+
+.su-prompt-card {
+    padding: 2rem;
+}
+
+.su-prompt-text {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+}
+
+.su-warning {
+    background: rgba(255, 77, 109, 0.12);
+    border: 1px solid rgba(255, 77, 109, 0.35);
+    padding: 0.9rem 1.1rem;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    color: var(--su-text);
+}
+
+.su-tabs {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.su-tab-button {
+    background: rgba(0, 234, 255, 0.08);
+    border: 1px solid var(--border-soft);
+    color: var(--su-text);
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    font-family: var(--su-font-heading);
+    font-size: 0.9rem;
+    transition: background var(--su-transition), color var(--su-transition), border var(--su-transition);
+}
+
+.su-tab-button.active {
+    background: var(--su-cyan);
+    color: var(--su-bg-deep);
+    border-color: transparent;
+}
+
+.su-tab-panel {
+    display: none;
+}
+
+.su-tab-panel.active {
+    display: block;
+}
+
+.su-form-wrap {
+    position: relative;
+}
+
+.su-btn-record {
+    background: rgba(255, 77, 109, 0.12);
+    border: 1px solid rgba(255, 77, 109, 0.45);
+    color: var(--su-text);
+    border-radius: var(--su-radius-btn);
+    padding: 0.7rem 1.4rem;
+    font-family: var(--su-font-heading);
+    font-weight: 600;
+    transition: transform var(--su-transition), box-shadow var(--su-transition), background var(--su-transition);
+}
+
+.su-btn-record.is-recording {
+    background: rgba(255, 77, 109, 0.35);
+    box-shadow: 0 0 24px rgba(255, 77, 109, 0.6);
+    animation: su-pulse 1.6s ease-in-out infinite;
+}
+
+.su-transcript-box {
+    background: rgba(0, 3, 40, 0.6);
+    border: 1px solid var(--su-cyan);
+    border-radius: 14px;
+    min-height: 160px;
+    padding: 1rem 1.2rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    color: var(--su-text);
+}
+
+.su-interim {
+    color: var(--su-muted);
+}
+
+.su-timer {
+    font-family: "Courier New", monospace;
+    font-size: 1.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 12px;
+    background: rgba(0, 234, 255, 0.12);
+    border: 1px solid rgba(0, 234, 255, 0.4);
+    color: var(--su-cyan);
+    min-width: 90px;
+    text-align: center;
+}
+
+.su-timer-warning {
+    color: var(--su-danger);
+    border-color: rgba(255, 77, 109, 0.5);
+    background: rgba(255, 77, 109, 0.12);
+}
+
+/* Upload zone — replaces the old upload label + raw file input */
+.su-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 180px;
+    border: 2px dashed rgba(0, 234, 255, 0.35);
+    border-radius: 16px;
+    background: rgba(0, 234, 255, 0.04);
+    cursor: pointer;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: border-color var(--su-transition), background var(--su-transition), box-shadow var(--su-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.su-upload-zone:hover {
+    border-color: var(--su-cyan);
+    background: rgba(0, 234, 255, 0.08);
+    box-shadow: 0 0 24px rgba(0, 234, 255, 0.1);
+}
+
+.su-upload-zone.is-dragover {
+    border-color: var(--su-cyan);
+    background: rgba(0, 234, 255, 0.12);
+    box-shadow: 0 0 32px rgba(0, 234, 255, 0.2);
+}
+
+.su-upload-zone-icon {
+    font-size: 2.5rem;
+    color: var(--su-cyan);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+    opacity: 0.75;
+    transition: opacity var(--su-transition), transform var(--su-transition);
+}
+
+.su-upload-zone:hover .su-upload-zone-icon {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+
+.su-upload-zone-title {
+    font-family: var(--su-font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--su-text);
+    margin: 0;
+}
+
+.su-upload-zone-hint {
+    font-size: 0.8rem;
+    color: var(--su-muted);
+    margin: 0;
+}
+
+/* Hide the native browser file picker completely */
+.su-file-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+/* Selected file row — shown after a file is chosen */
+.su-upload-selected {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.7rem 1rem;
+    background: rgba(0, 234, 255, 0.08);
+    border: 1px solid rgba(0, 234, 255, 0.25);
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.su-upload-filename {
+    flex: 1;
+    color: var(--su-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.su-upload-clear {
+    background: none;
+    border: none;
+    color: var(--su-muted);
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    transition: color var(--su-transition);
+    flex-shrink: 0;
+}
+
+.su-upload-clear:hover {
+    color: var(--su-danger);
+}
+
+.su-loading {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 3, 40, 0.78);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border-radius: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--su-transition);
+    color: var(--su-text);
+    font-family: var(--su-font-heading);
+}
+
+.su-loading.is-visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.su-spinner {
+    width: 42px;
+    height: 42px;
+    border: 3px solid rgba(0, 234, 255, 0.2);
+    border-top-color: var(--su-cyan);
+    border-radius: 50%;
+    animation: su-spin 1s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   5e. Feedback Page
+   -------------------------------------------------------------------------- */
+
+/* Single page wrapper — provides consistent top padding */
+.su-feedback-page {
+    padding: 2rem 0 1rem;
+}
+
+.su-feedback-header {
+    /* intentionally minimal — spacing handled by mb-4 in HTML */
+}
+
+.su-score-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.8rem;
+}
+
+.su-score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--su-font-heading);
+    background: rgba(0, 234, 255, 0.08);
+    box-shadow: 0 0 24px rgba(0, 234, 255, 0.2);
+}
+
+.su-score-value {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.su-score-max {
+    font-size: 0.85rem;
+    color: var(--su-muted);
+}
+
+.su-score-circle.score-low {
+    border-color: rgba(255, 77, 109, 0.6);
+    box-shadow: 0 0 24px rgba(255, 77, 109, 0.35);
+}
+
+.su-score-circle.score-mid {
+    border-color: rgba(245, 158, 11, 0.6);
+    box-shadow: 0 0 24px rgba(245, 158, 11, 0.35);
+}
+
+.su-score-circle.score-high {
+    border-color: rgba(34, 211, 165, 0.6);
+    box-shadow: 0 0 24px rgba(34, 211, 165, 0.35);
+}
+
+.su-parameter-card {
+    /* flex column so the score pin stays at bottom regardless of text height */
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    text-align: left;
+    border-left: 4px solid var(--border-soft);
+    background: var(--su-card-bg);
+    border-radius: var(--su-radius-card);
+    transition: transform var(--su-transition), box-shadow var(--su-transition), border-color var(--su-transition);
+    cursor: pointer;
+    /* button reset */
+    border-top: 1px solid var(--su-card-border);
+    border-right: 1px solid var(--su-card-border);
+    border-bottom: 1px solid var(--su-card-border);
+}
+
+.su-parameter-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 234, 255, 0.12);
+}
+
+.su-parameter-card.score-low {
+    border-left-color: var(--su-danger);
+}
+
+.su-parameter-card.score-mid {
+    border-left-color: var(--su-warning);
+}
+
+.su-parameter-card.score-high {
+    border-left-color: var(--su-success);
+}
+
+.su-parameter-header {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    /* grow to push score to the bottom */
+    flex: 1;
+}
+
+/* Prevent long text from overflowing the flex row */
+.min-w-0 {
+    min-width: 0;
+}
+
+.su-parameter-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 234, 255, 0.12);
+    color: var(--su-cyan);
+    font-size: 1.1rem;
+}
+
+.su-parameter-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+    /* prevent wrapping overflow */
+    word-break: break-word;
+}
+
+.su-parameter-comment {
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    word-break: break-word;
+}
+
+.su-parameter-score {
+    margin-top: 0.9rem;
+    font-weight: 700;
+    color: var(--su-text);
+    font-size: 0.95rem;
+}
+
+.su-parameter-detail {
+    margin-top: 0.75rem;
+    color: var(--su-muted);
+    font-size: 0.875rem;
+    display: none;
+}
+
+.su-parameter-card.is-expanded .su-parameter-detail {
+    display: block;
+}
+
+.su-section-card {
+    padding: 1.6rem;
+}
+
+.su-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.su-tag {
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(0, 234, 255, 0.12);
+    border: 1px solid rgba(0, 234, 255, 0.35);
+    font-size: 0.85rem;
+}
+
+.su-wpm-value {
+    font-family: var(--su-font-heading);
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+}
+
+.su-wpm-bar {
+    height: 10px;
+    background: rgba(0, 234, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.su-wpm-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, rgba(0, 234, 255, 0.3), var(--su-cyan));
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.su-list-success,
+.su-list-improve {
+    margin: 0;
+    padding-left: 0;
+}
+
+.su-list-success li {
+    list-style: none;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.su-list-success i {
+    color: var(--su-success);
+}
+
+.su-list-improve li {
+    margin-bottom: 0.6rem;
+    color: var(--su-cyan);
+}
+
+.su-quote {
+    border-left: 4px solid var(--su-cyan);
+    background: rgba(0, 234, 255, 0.08);
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    margin: 0;
+    color: var(--su-text);
+}
+
+.su-feedback-actions {
+    /* spacing is handled by pb-4 in HTML */
+}
+
+.su-transcript-text {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--su-text);
+    white-space: pre-wrap;
+    font-family: var(--su-font-body);
+}
+
+.su-parameter-filler-note {
+    font-size: 0.85rem;
+    color: var(--su-warning);
+    font-style: italic;
+}
+
+/* Tips card on Practice page */
+.su-tips-card {
+    padding: 1.2rem 1.6rem;
+    border-color: rgba(0, 234, 255, 0.2);
+}
+
+.su-tips-label {
+    margin-bottom: 0.6rem;
+    font-family: var(--su-font-heading);
+    font-size: 0.9rem;
+}
+
+.su-tips-list {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.su-tips-list li {
+    color: var(--su-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. Buttons
+   -------------------------------------------------------------------------- */
+.su-btn-primary {
+    background: linear-gradient(135deg, var(--su-cyan), #0099cc);
+    border: none;
+    border-radius: var(--su-radius-btn);
+    color: var(--su-bg-deep);
+    font-family: var(--su-font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.75rem;
+    cursor: pointer;
+    transition: opacity var(--su-transition), transform var(--su-transition), box-shadow var(--su-transition);
+    letter-spacing: 0.01em;
+}
+
+.su-btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 234, 255, 0.35);
+}
+
+.su-btn-primary:active {
+    transform: translateY(0);
+}
+
+.su-btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--su-cyan);
+    border-radius: var(--su-radius-btn);
+    color: var(--su-cyan);
+    font-family: var(--su-font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.65rem 1.6rem;
+    cursor: pointer;
+    transition: background var(--su-transition), color var(--su-transition);
+}
+
+.su-btn-outline:hover {
+    background: rgba(0, 234, 255, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   7. Main / Footer
+   -------------------------------------------------------------------------- */
+.su-main {
+    min-height: calc(100vh - 140px);
+    padding: 2.5rem 0 4rem;
+}
+
+.su-footer {
+    border-top: 1px solid var(--su-card-border);
+    padding: 1.4rem 0;
+    color: var(--su-muted);
+    font-size: 0.875rem;
+    background: rgba(0, 3, 40, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   8. Utility Classes
+   -------------------------------------------------------------------------- */
+.su-glow-text {
+    text-shadow: 0 0 20px rgba(0, 234, 255, 0.5);
+}
+
+.su-divider {
+    border: none;
+    border-top: 1px solid var(--su-card-border);
+    margin: 2rem 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. Animations
+   -------------------------------------------------------------------------- */
+@keyframes su-fade-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes su-fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes su-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes su-spin {
+    to { transform: rotate(360deg); }
+}
+
+.su-fade-in {
+    animation: su-fade-in 0.5s ease both;
+}
+
+.su-fade-in-delay-1 { animation-delay: 0.1s; }
+.su-fade-in-delay-2 { animation-delay: 0.2s; }
+.su-fade-in-delay-3 { animation-delay: 0.3s; }
+
+/* --------------------------------------------------------------------------
+   10. Practice Page — MediaRecorder UI
+   New classes for the single-page record + upload layout.
+   All values use existing design tokens.
+   -------------------------------------------------------------------------- */
+
+/* Practice cards — consistent padding, no hover lift on functional cards */
+.su-practice-record-card,
+.su-practice-upload-card {
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.su-practice-loading-card {
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.practice-section-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.practice-section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Large countdown timer — centred, monospace, cyan */
+.su-practice-timer {
+    font-family: "Courier New", monospace;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--su-cyan);
+    text-align: center;
+    letter-spacing: 0.04em;
+    margin: 0.5rem 0 1.75rem;
+    text-shadow: 0 0 18px rgba(0, 234, 255, 0.35);
+    transition: color var(--su-transition);
+}
+
+/* Override: red colour + glow when ≤ 10 seconds remain */
+.su-practice-timer.timer-warning {
+    color: var(--su-danger);
+    text-shadow: 0 0 18px rgba(255, 77, 109, 0.45);
+}
+
+/* Button row: record + stop side by side, wraps on mobile */
+.practice-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Record button — distinct from su-btn-primary; stands out as the primary CTA */
+.su-btn-record-new {
+    background: linear-gradient(135deg, rgba(255, 77, 109, 0.18), rgba(255, 77, 109, 0.08));
+    border: 1.5px solid rgba(255, 77, 109, 0.55);
+    color: var(--su-text);
+    border-radius: var(--su-radius-btn);
+    padding: 0.75rem 2rem;
+    font-family: var(--su-font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--su-transition), box-shadow var(--su-transition), transform var(--su-transition);
+    letter-spacing: 0.01em;
+}
+
+.su-btn-record-new:hover:not(:disabled) {
+    background: rgba(255, 77, 109, 0.28);
+    box-shadow: 0 0 20px rgba(255, 77, 109, 0.35);
+    transform: translateY(-2px);
+}
+
+.su-btn-record-new:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Active recording state: red fill + continuous pulse ring */
+.su-btn-record-new.recording {
+    background: rgba(255, 77, 109, 0.4);
+    border-color: var(--su-danger);
+    box-shadow: 0 0 28px rgba(255, 77, 109, 0.55);
+    animation: su-record-pulse 1.3s ease-in-out infinite;
+}
+
+@keyframes su-record-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.45); }
+    50%       { box-shadow: 0 0 0 16px rgba(255, 77, 109, 0); }
+}
+
+/* Loading spinner variant — slightly larger for the practice loading card */
+.practice-spinner {
+    width: 52px;
+    height: 52px;
+    border-width: 4px;
+    margin: 0 auto 1rem;
+}
+
+/* Loading message text */
+.su-practice-loading-text {
+    color: var(--su-cyan);
+    font-family: var(--su-font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive Tweaks
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .su-main {
+        padding: 1.5rem 0 3rem;
+    }
+
+    .su-score-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .su-score-circle {
+        width: 96px;
+        height: 96px;
+    }
+
+    .su-category-desc {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 992px) {
+    .su-category-card,
+    .su-parameter-card,
+    .su-section-card {
+        width: 100%;
+    }
+}

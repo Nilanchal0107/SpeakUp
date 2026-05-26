@@ -1,0 +1,165 @@
+{% extends "layout.html" %}
+
+{% block title %}Feedback — {{ scenario.title }}{% endblock %}
+
+{% block main %}
+<div class="su-feedback-page">
+    <div class="container">
+
+        <!-- ── Page header ──────────────────────────────────────────────── -->
+        <div class="su-feedback-header mb-4">
+            <h1 class="su-heading su-heading-lg mb-1">Your Feedback</h1>
+            <p class="su-muted mb-0">Review your performance and key improvement areas.</p>
+        </div>
+
+        <!-- ── Overall score ────────────────────────────────────────────── -->
+        <div class="su-card su-score-card mb-4">
+            <div class="su-score-circle" id="overall-score" data-score="{{ feedback.overall_score }}">
+                <span class="su-score-value">0</span>
+                <span class="su-score-max">/10</span>
+            </div>
+            <div>
+                <h2 class="su-heading mb-1">Overall Score</h2>
+                <p class="su-muted mb-0">A quick summary of your communication performance.</p>
+            </div>
+        </div>
+
+        <!-- ── Parameter cards (6 items, 3-col grid) ────────────────────── -->
+        {% set params = [
+            ("clarity",    "Clarity",    "bi-brightness-high"),
+            ("relevance",  "Relevance",  "bi-bullseye"),
+            ("fluency",    "Fluency",    "bi-soundwave"),
+            ("grammar",    "Grammar",    "bi-check-circle"),
+            ("confidence", "Confidence", "bi-emoji-smile"),
+            ("structure",  "Structure",  "bi-diagram-3")
+        ] %}
+        <div class="row g-3 mb-4">
+            {% for key, label, icon in params %}
+                {% set param = feedback.parameters[key] %}
+                <div class="col-12 col-md-6 col-lg-4 d-flex">
+                    <button class="su-card su-parameter-card w-100" type="button"
+                            data-score="{{ param.score }}">
+                        <div class="su-parameter-header">
+                            <div class="su-parameter-icon flex-shrink-0">
+                                <i class="bi {{ icon }}"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <h3 class="su-heading su-parameter-title">{{ label }}</h3>
+                                <p class="su-muted su-parameter-comment">
+                                    {{ param.comment | truncate(60, True, '…') }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="su-parameter-score">{{ param.score }}/10</div>
+                        <div class="su-parameter-detail">
+                            {{ param.comment }}
+                            {% if key == "fluency" and param.filler_count is defined %}
+                                <span class="su-parameter-filler-note">
+                                    — {{ param.filler_count }} filler word(s) counted.
+                                </span>
+                            {% endif %}
+                        </div>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- ── Filler words + Speaking pace ─────────────────────────────── -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-6 d-flex">
+                <div class="su-card su-section-card w-100">
+                    <h3 class="su-heading mb-3">Filler Words</h3>
+                    {% set filler_stats = feedback.filler_stats or {} %}
+                    {% if filler_stats %}
+                        <div class="su-tag-list">
+                            {% for word, count in filler_stats.items() %}
+                                <span class="su-tag">{{ word }} ({{ count }})</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="su-muted mb-0">No filler words detected!</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 d-flex">
+                <div class="su-card su-section-card w-100">
+                    <h3 class="su-heading mb-3">Speaking Pace</h3>
+                    <div class="su-wpm">
+                        <div class="su-wpm-value" id="wpm-value"
+                             data-wpm="{{ feedback.wpm_stats.wpm|default(0) }}">
+                            {{ feedback.wpm_stats.wpm|default(0) }} WPM
+                        </div>
+                        <p class="su-muted mb-2">
+                            {{ feedback.wpm_stats.interpretation|default('') }}
+                        </p>
+                        <div class="su-wpm-bar">
+                            <div class="su-wpm-fill" id="wpm-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Strengths + Improvements ─────────────────────────────────── -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-6 d-flex">
+                <div class="su-card su-section-card w-100">
+                    <h3 class="su-heading mb-3">Strengths</h3>
+                    <ul class="su-list-success">
+                        {% for item in feedback.strengths %}
+                            <li>
+                                <i class="bi bi-check-circle-fill"></i>{{ item }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 d-flex">
+                <div class="su-card su-section-card w-100">
+                    <h3 class="su-heading mb-3">Improvements</h3>
+                    <ol class="su-list-improve">
+                        {% for item in feedback.improvements %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Transcript ────────────────────────────────────────────────── -->
+        <div class="su-card su-section-card mb-3">
+            <h3 class="su-heading mb-3">Your Transcript</h3>
+            {% if transcript %}
+                <p class="su-transcript-text mb-0">{{ transcript }}</p>
+            {% else %}
+                <p class="su-muted mb-0">Transcript not available.</p>
+            {% endif %}
+        </div>
+
+        <!-- ── Example rewrite ───────────────────────────────────────────── -->
+        <div class="su-card su-section-card mb-4">
+            <h3 class="su-heading mb-3">Example Rewrite</h3>
+            <blockquote class="su-quote">{{ feedback.example_rewrite }}</blockquote>
+        </div>
+
+        <!-- ── Actions ───────────────────────────────────────────────────── -->
+        <div class="su-feedback-actions pb-4">
+            <div class="d-flex flex-wrap gap-3">
+                <a class="su-btn-primary"
+                   href="{{ url_for('practice', category=category, scenario_id=scenario.id) }}">
+                    Try Again
+                </a>
+                <a class="su-btn-outline" href="{{ url_for('index') }}">
+                    New Scenario
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- feedback.js loaded only on this page -->
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+{% endblock %}

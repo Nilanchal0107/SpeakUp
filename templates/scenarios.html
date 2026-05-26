@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}Scenarios{% endblock %}
+
+{% block main %}
+<section class="su-scenarios-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="su-breadcrumb">
+            <ol class="breadcrumb mb-3">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ category_data.name }}
+                </li>
+            </ol>
+        </nav>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h1 class="su-heading su-heading-lg">{{ category_data.name }}</h1>
+                <p class="su-muted mb-0">{{ category_data.description }}</p>
+            </div>
+            <a class="su-btn-outline" href="{{ url_for('index') }}">
+                <i class="bi bi-arrow-left me-2"></i>Back
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="su-scenario-list">
+    <div class="container">
+        <div class="row g-4">
+            {% for scenario in category_data.scenarios %}
+                <div class="col-12">
+                    <div class="su-card su-scenario-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3 class="su-heading su-scenario-title">{{ scenario.title }}</h3>
+                                <p class="su-muted su-scenario-preview">
+                                    {{ scenario.prompt | truncate(80, True, '...') }}
+                                </p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="su-badge su-badge-time">
+                                        <i class="bi bi-clock me-1"></i>{{ scenario.time_limit }} sec
+                                    </span>
+                                    {% if scenario.difficulty == "Easy" %}
+                                        <span class="su-badge su-badge-easy">Easy</span>
+                                    {% elif scenario.difficulty == "Medium" %}
+                                        <span class="su-badge su-badge-medium">Medium</span>
+                                    {% else %}
+                                        <span class="su-badge su-badge-hard">Hard</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <a class="su-btn-primary" href="{{ url_for('practice', category=category, scenario_id=scenario.id) }}">
+                                    Start
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block main %}
+<section class="su-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <p class="su-hero-kicker">AI Communication Trainer</p>
+                <h1 class="su-heading su-heading-xl su-hero-title">SpeakUp</h1>
+                <p class="su-hero-tagline">Practice. Speak. Improve.</p>
+                <p class="su-muted su-hero-subtitle">
+                    Choose a category and start practicing real-world speaking scenarios with instant feedback.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="su-category-section">
+    <div class="container">
+        <div class="row g-4">
+            {% for key, category in scenarios.items() %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="su-card su-category-card su-fade-in su-fade-in-delay-{{ loop.index }}">
+                        <div class="su-category-icon">
+                            {% if category.icon == "mic" %}
+                                <i class="bi bi-mic-fill"></i>
+                            {% elif category.icon == "megaphone" %}
+                                <i class="bi bi-megaphone-fill"></i>
+                            {% elif category.icon == "presentation" %}
+                                <i class="bi bi-easel2-fill"></i>
+                            {% else %}
+                                <i class="bi bi-mic-fill"></i>
+                            {% endif %}
+                        </div>
+                        <h3 class="su-heading su-category-title">{{ category.name }}</h3>
+                        <p class="su-muted su-category-desc">{{ category.description }}</p>
+                        {% if category.difficulty == "Beginner" %}
+                            <span class="su-badge su-badge-beginner">Beginner</span>
+                        {% elif category.difficulty == "Intermediate" %}
+                            <span class="su-badge su-badge-intermediate">Intermediate</span>
+                        {% else %}
+                            <span class="su-badge su-badge-advanced">Advanced</span>
+                        {% endif %}
+                        <div class="mt-4">
+                            <a class="su-btn-primary" href="{{ url_for('scenarios', category=key) }}">
+                                Start Practising
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
