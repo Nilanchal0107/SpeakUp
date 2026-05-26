@@ -1,6 +1,6 @@
 # SpeakUp — AI Communication Skills Trainer
 
-#### Video Demo: `<URL HERE>`
+#### Video Demo: `https://youtu.be/oMtkoZgZvx0`
 
 | Field | Details |
 |---|---|
